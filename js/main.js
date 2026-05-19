@@ -1,5 +1,76 @@
-// Mobile menu toggle
+// ============================================================
+//  Site Dra. Beatriz Aroeira — main.js
+//  Inicializa dataLayer ANTES de qualquer outra coisa para
+//  garantir que o tracking funcione mesmo se o GTM ainda nao
+//  tiver carregado.
+// ============================================================
+window.dataLayer = window.dataLayer || [];
+
+// ------------------------------------------------------------
+// 1) TRACKING DE CLIQUES EM WHATSAPP
+//    - Cobre wa.me, api.whatsapp.com/send e whatsapp://
+//    - Usa delegacao de eventos no document (resiliente a
+//      mudancas dinamicas e SPAs)
+//    - Detecta button_location automaticamente
+//    - Anexado fora do DOMContentLoaded para ser registrado o
+//      mais cedo possivel; a delegacao no document funciona
+//      mesmo antes do DOM estar totalmente parseado
+// ------------------------------------------------------------
+(function () {
+  var WHATSAPP_REGEX = /(?:wa\.me|api\.whatsapp\.com\/send|whatsapp:\/\/)/i;
+
+  function isWhatsAppLink(href) {
+    return !!href && WHATSAPP_REGEX.test(href);
+  }
+
+  // Mapeia o link clicado para uma "localizacao" semantica.
+  // A ordem importa: a primeira regra que casar vence.
+  function detectButtonLocation(el) {
+    if (!el || typeof el.closest !== 'function') return 'unknown';
+
+    if (el.closest('.whatsapp-float-group, .whatsapp-float'))     return 'floating';
+    if (el.closest('.site-header'))                               return 'header';
+    if (el.closest('.hero-cta'))                                  return 'hero';
+    if (el.closest('.cta-strip'))                                 return 'cta_strip';
+    if (el.closest('.service-cta'))                               return 'service_cta';
+    if (el.closest('.faq-intro, .faq-section, .faq-grid'))        return 'faq';
+    if (el.closest('.contact-method, .contact-section, .contact-grid, .contact-page-grid, .contact-info-block'))
+      return 'contact_section';
+    if (el.closest('.article, .article-content'))                 return 'blog_post';
+    if (el.closest('.site-footer'))                               return 'footer';
+    return 'other';
+  }
+
+  document.addEventListener(
+    'click',
+    function (event) {
+      // event.target pode ser um <svg>/<span> dentro do <a>, entao
+      // sobe ate achar o <a> mais proximo.
+      var anchor = event.target && event.target.closest
+        ? event.target.closest('a')
+        : null;
+      if (!anchor) return;
+
+      var href = anchor.getAttribute('href');
+      if (!isWhatsAppLink(href)) return;
+
+      // dataLayer.push e sincrono — dispara ANTES do navegador
+      // abrir o link. Nao usamos preventDefault.
+      window.dataLayer.push({
+        event: 'whatsapp_click',
+        button_location: detectButtonLocation(anchor),
+        page_path: window.location.pathname
+      });
+    },
+    true // capture: roda antes de handlers que nao sao em capture
+  );
+})();
+
+// ------------------------------------------------------------
+// 2) RESTANTE DO SITE
+// ------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
+  // Mobile menu toggle
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.header-nav');
 
@@ -63,22 +134,16 @@ document.addEventListener('DOMContentLoaded', () => {
     reset();
   }
 
-  // Tracking events (dataLayer / GTM ready when activated)
+  // ------------------------------------------------------------
+  // 3) Outros eventos de tracking (Instagram, telefone, e-mail,
+  //    cards de servico, cards de blog, scroll depth).
+  //    OBS: WhatsApp ja eh tratado por delegacao acima — nao
+  //    duplicar aqui.
+  // ------------------------------------------------------------
   const trackEvent = (eventName, params = {}) => {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: eventName, ...params });
   };
-
-  document.querySelectorAll('a[href*="whatsapp.com"], a[href*="wa.me"]').forEach((link) => {
-    link.addEventListener('click', () => {
-      trackEvent('whatsapp_click', {
-        event_category: 'contato',
-        event_label: link.getAttribute('aria-label') || link.textContent.trim() || 'WhatsApp',
-        click_url: link.getAttribute('href'),
-        page_path: window.location.pathname,
-      });
-    });
-  });
 
   document.querySelectorAll('a[href*="instagram.com"]').forEach((link) => {
     link.addEventListener('click', () => {
