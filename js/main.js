@@ -67,29 +67,17 @@ window.dataLayer = window.dataLayer || [];
 })();
 
 // ------------------------------------------------------------
-// 2) GCLID -> link WhatsApp
-//    Captura o gclid do Google Ads (param da URL) e anexa na
-//    mensagem que abre no WhatsApp como [ref: gclid]. Assim,
-//    quando a paciente abre conversa, voce sabe qual anuncio
-//    do Google Ads trouxe a conversao.
-//    - Salva em sessionStorage para sobreviver a cliques
-//      internos no site (manter o gclid durante a sessao)
-//    - Reescreve todos os links de wa.me, api.whatsapp.com,
-//      web.whatsapp.com com o numero correto da Dra. Beatriz
+// 2) Link WhatsApp
+//    Reescreve todos os links de wa.me, api.whatsapp.com,
+//    web.whatsapp.com com o numero e a mensagem padrao
+//    da Dra. Beatriz.
 // ------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
   (function () {
     var NUMERO   = "5531984536446"; // (31) 98453-6446
     var MENSAGEM = "Olá! Vim pelo site e gostaria de agendar uma consulta com a Dra. Beatriz Aroeira";
 
-    var gclid = new URLSearchParams(location.search).get("gclid");
-    try {
-      if (gclid) sessionStorage.setItem("gclid", gclid);
-      else gclid = sessionStorage.getItem("gclid");
-    } catch (e) { /* sessionStorage pode estar bloqueado em modo privado */ }
-
-    var ref  = gclid ? " [ref: " + gclid + "]" : "";
-    var href = "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(MENSAGEM + ref);
+    var href = "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(MENSAGEM);
 
     document.querySelectorAll(
       'a[href*="wa.me"], a[href*="api.whatsapp.com"], a[href*="web.whatsapp.com"]'
