@@ -528,12 +528,16 @@
   height: 8px;
   border-radius: 50%;
   background: rgba(107, 42, 57, 0.25);
-  transition: all 0.3s var(--ease);
-  padding: 0;
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+  padding: 18px;
+  margin: -18px;
+  background-clip: content-box;
+  box-sizing: content-box;
 }
 
 .testimonial-dot.active {
   background: var(--color-primary);
+  background-clip: content-box;
   transform: scale(1.4);
 }
 

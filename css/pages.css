@@ -313,7 +313,7 @@
   border-radius: 16px;
 }
 
-.contact-info-block h3 {
+.contact-info-block h2 {
   font-size: 1.4rem;
   margin-bottom: 20px;
 }
@@ -468,7 +468,7 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(107, 42, 57, 0.55);
+  color: var(--color-text-muted);
 }
 .credential-value {
   font-size: 1.05rem;

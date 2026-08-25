@@ -95,12 +95,14 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.addEventListener('click', () => {
       toggle.classList.toggle('active');
       nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', nav.classList.contains('open') ? 'true' : 'false');
     });
 
     nav.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         toggle.classList.remove('active');
         nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
       });
     });
   }

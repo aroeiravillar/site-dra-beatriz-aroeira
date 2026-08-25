@@ -43,12 +43,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 
+<link rel="preload" as="image" href="assets/photo-beatriz-hero.jpg" fetchpriority="high">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap"></noscript>
 
 <link rel="stylesheet" href="css/style.css?v=1">
-<link rel="stylesheet" href="css/home.css?v=1">
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="css/home.css?v=1">
+<noscript><link rel="stylesheet" href="css/home.css?v=1"></noscript>
+<style>
+.hero{background:#E8DCC9;padding:60px 0 90px;position:relative}
+.hero-inner{display:grid;grid-template-columns:1.05fr 1fr;gap:80px;align-items:center;position:relative}
+.hero-eyebrow{display:inline-block;font-size:.78rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#6B2A39;margin-bottom:20px;padding:6px 14px;background:rgba(255,255,255,.6);border-radius:999px;border:1px solid rgba(107,42,57,.12)}
+.hero-title{font-size:clamp(2.4rem,4.8vw,3.6rem);line-height:1.08;margin-bottom:22px}
+.hero-desc{font-size:1.08rem;line-height:1.65;margin-bottom:32px;max-width:560px}
+.hero-cta{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-bottom:44px}
+.btn-link{font-family:var(--font-sans);font-size:.86rem;font-weight:500;letter-spacing:.04em;color:#6B2A39;border-bottom:1px solid transparent;padding-bottom:2px}
+.hero-meta{display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(107,42,57,.15)}
+.hero-meta-item{display:flex;flex-direction:column;gap:2px}
+.hero-meta-item strong{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#9B7D82}
+.hero-meta-item span{font-size:1.2rem;font-style:italic;font-weight:500;color:#6B2A39}
+.hero-meta-divider{width:1px;height:32px;background:rgba(107,42,57,.2)}
+.hero-image{position:relative;display:flex;justify-content:center}
+.hero-image-frame{width:100%;max-width:460px;aspect-ratio:4/5;border-radius:280px 280px 24px 24px;overflow:hidden;box-shadow:0 12px 40px rgba(107,42,57,.12);position:relative;z-index:2}
+.hero-image-frame img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.hero-cta .btn-primary{background:#fff;color:#6B2A39;border:1px solid #9C5666;box-shadow:0 2px 8px rgba(107,42,57,.06);font-weight:600}
+.hero.bg-pattern::before{background-position:top right;background-size:auto 100%;background-repeat:repeat-x;opacity:.25;-webkit-mask-image:linear-gradient(to left,rgba(0,0,0,1) 0%,rgba(0,0,0,1) 25%,rgba(0,0,0,0) 65%);mask-image:linear-gradient(to left,rgba(0,0,0,1) 0%,rgba(0,0,0,1) 25%,rgba(0,0,0,0) 65%)}
+@media(max-width:900px){.hero.bg-pattern::before{background-size:80% auto;opacity:.18}.hero-inner{grid-template-columns:1fr;gap:50px;text-align:center}.hero-eyebrow,.hero-cta,.hero-meta{justify-content:center}.hero-cta{flex-direction:column}.hero-desc{max-width:92%;margin-left:auto;margin-right:auto;text-align:justify}.hero-title{max-width:92%;margin-left:auto;margin-right:auto}.hero-image{order:-1;width:100%;display:flex;justify-content:center;align-items:center;padding:0}.hero-image-frame{max-width:320px;margin-left:auto;margin-right:auto;border-radius:200px 200px 24px 24px}}
+</style>
 
 <!-- Schema.org Physician -->
 <script type="application/ld+json">
@@ -448,7 +472,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </div>
       </div>
-      <div class="testimonials-dots" role="tablist">
+      <div class="testimonials-dots" role="group" aria-label="Navegação de depoimentos">
         <button class="testimonial-dot active" aria-label="Depoimento 1"></button>
         <button class="testimonial-dot" aria-label="Depoimento 2"></button>
         <button class="testimonial-dot" aria-label="Depoimento 3"></button>
@@ -658,15 +682,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="footer-col">
         <h4>Contato</h4>
         <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span><strong>Clínica Plene</strong><br>Rua Ouro Preto, 1596 — Sala 804<br>Santo Agostinho, Belo Horizonte/MG</span>
         </div>
         <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
           <span><a href="https://api.whatsapp.com/send/?phone=553184536446&text=Ol%C3%A1%21+Vim+pelo+site+e+gostaria+de+agendar+uma+consulta+com+a+Dra.+Beatriz+Aroeira" target="_blank" rel="noopener">(31) 98453-6446</a></span>
         </div>
         <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
           <span><a href="https://www.instagram.com/drabeatrizaroeira/" target="_blank" rel="noopener">@drabeatrizaroeira</a></span>
         </div>
       </div>
